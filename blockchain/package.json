@@ -1,0 +1,24 @@
+{
+  "name": "medicine-supply-chain-integrated-with-blockchain-and-iot",
+  "version": "1.0.0",
+  "description": "Truthfulness of data is essential in every supplychain application hence this project contains a blockchain application designed to enhance the transparency and security of drug supply chain management. By integrating Internet of Things (IoT) devices, we ensure real-time and accurate tracking of drug delivery processes—from production to final delivery.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^3.0.6",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@openzeppelin/hardhat-upgrades": "^3.2.0",
+    "ethers": "^6.13.1",
+    "hardhat": "^2.22.6"
+  },
+  "dependencies": {
+    "@nomicfoundation/hardhat-ignition": "^0.15.5",
+    "@openzeppelin/contracts-upgradeable": "^5.0.2",
+    "dotenv": "^16.4.5"
+  }
+}
