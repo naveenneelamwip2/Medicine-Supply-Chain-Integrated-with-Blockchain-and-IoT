@@ -22,36 +22,36 @@ export class EthersService {
   private medicineContractWithSigner = this.medicineContract.connect(this.signer) as any;
   
   async addUser(email: string, cid: string) {
-    const tx = await this.userContract.addUser(email, cid);
+    const tx = await this.userContractWithSigner.addUser(email, cid);
     await tx.wait();
   }
 
   async getUserHash(email: string): Promise<string> {
-    return await this.userContract.getUserHash(email);
+    return await this.userContractWithSigner.getUserHash(email);
   }
 
   async updateUser(email: string, cid: string) {
-    const tx = await this.userContract.updateUser(email, cid);
+    const tx = await this.userContractWithSigner.updateUser(email, cid);
     await tx.wait();
   }
 
   async addMedicine(userId: string, cid: string) {
-    const tx = await this.medicineContract.addMedicine(userId, cid);
+    const tx = await this.medicineContractWithSigner.addMedicine(userId, cid);
     await tx.wait();
   }
 
   async getMedicineHashes(userCid: string): Promise<string[]> {
-    return await this.medicineContract.getMedicineHashes(userCid);
+    return await this.medicineContractWithSigner.getMedicineHashes(userCid);
   }
 
   async getMedicineHash(medicineId:string, userCid: string): Promise<string[]> {
-    let allUsrMedicines = await this.medicineContract.getMedicineHash(userCid);
+    let allUsrMedicines = await this.medicineContractWithSigner.getMedicineHash(userCid);
 
     return allUsrMedicines.filter(medicine=>medicineId === medicine.medicineId)
   }
 
   async updateMedicine(medicineId: string, cid: string) {
-    const tx = await this.medicineContract.updateMedicine(medicineId, cid);
+    const tx = await this.medicineContractWithSigner.updateMedicine(medicineId, cid);
     await tx.wait();
   }
 }
