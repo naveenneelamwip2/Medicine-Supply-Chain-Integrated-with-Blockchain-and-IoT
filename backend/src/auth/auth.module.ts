@@ -6,18 +6,20 @@ import { JwtStrategy } from './jwt.strategy';
 import { UserModule } from '../user/user.module';
 import { UserService } from 'src/user/user.service';
 import { EthersService } from 'src/common/ethers.service';
+import { BlockchainModule } from 'src/common/blockchain.module';
+import { IpfsService } from 'src/common/ipfs.service';
 
 @Module({
   imports: [
     PassportModule,
-    UserModule,
     JwtModule.register({
       secret: 'secretKey',
       signOptions: { expiresIn: '60m' },
     }),
     UserModule,
+    BlockchainModule,
   ],
-  providers: [EthersService, AuthService, JwtStrategy],
+  providers: [UserService, EthersService, IpfsService, AuthService, JwtStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}
