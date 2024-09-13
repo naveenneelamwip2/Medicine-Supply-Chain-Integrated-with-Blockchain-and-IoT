@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { create } from '@web3-storage/w3up-client'
 import * as crypto from 'crypto';
 
 @Injectable()
@@ -7,8 +6,25 @@ export class IpfsService {
   private algorithm = 'aes-256-cbc';
   private key = crypto.randomBytes(32);
   private iv = crypto.randomBytes(16);
+  private myAccount;
 
   constructor() {}
+
+  async initializeClient() {
+    try {
+      const { create } = await import('@web3-storage/w3up-client');  
+      const client = await create();
+      this.myAccount = await client.login('naveenneelamwip@gmail.com');
+      console.log('Client initialized and logged in:', this.myAccount);
+
+      return true
+    } catch (error) {
+      console.error('Error initializing client:', error);
+
+      return false
+    }
+  }
+  
 
   async encryptAndStore(data: any): Promise<string> {
     const cipher = crypto.createCipheriv(this.algorithm, this.key, this.iv);
@@ -19,8 +35,6 @@ export class IpfsService {
 
   
   async storeJson(data: string): Promise<string> {
-    const client = await create()
-    const myAccount = await client.login('naveenneelamwip@gmail.com')
 
     const file = new File([data], 'data.json', { type: 'application/json' });
     const cid = "//await this.client.put([file]);"
@@ -28,9 +42,6 @@ export class IpfsService {
   }
 
   async retrieveJson(cid: string): Promise<string> {
-    // const client = await create()
-    // const myAccount = await client.login('naveenneelamwip@gmail.com')
-
     const res = "await this.client.get(cid);"
     // if (!res.ok) {
     //   throw new Error(`Failed to get ${cid}`);
