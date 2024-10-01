@@ -9,16 +9,7 @@ export class IpfsService {
   private myAccount;
   private client;;
   private ipfsClientNotIntilized = true;
-  constructor() {
-    // this.client = create({
-    //   host: 'ipfs.filebase.io',
-    //   port: 5001,
-    //   protocol: 'https',
-    //   headers: {
-    //     authorization: `Bearer ${process.env.FILEBASE_API_KEY}`,
-    //   },
-    // });
-  }
+  constructor() {}
 
   async initializeClient() {
     try {
