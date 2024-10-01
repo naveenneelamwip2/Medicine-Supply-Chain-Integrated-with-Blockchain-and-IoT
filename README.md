@@ -26,7 +26,7 @@ Truthfulness of data is essential in every supplychain application hence this pr
 ## Installation
 1. Clone this repository:
    ```
-   git clone https://github.com/your-username/blockchain-drug-delivery.git
+   git clone https://github.com/naveenneelamwip2/Medicine-Supply-Chain-Integrated-with-Blockchain-and-IoT.git
    ```
 
 2. Install dependencies:
@@ -38,15 +38,23 @@ Truthfulness of data is essential in every supplychain application hence this pr
 
 4. Deploy smart contracts:
    ```
-   truffle migrate
+   npx hardhat run .\blockchain\ignition\initialize\User.js --network fontomtest
+   npx hardhat run .\blockchain\ignition\initialize\Medicine.js --network fontomtest
+
+   Please run this in powershell if any TLS cert error in local: $env:NODE_TLS_REJECT_UNAUTHORIZED=0
    ```
 
 ## Usage
 1. Start the IoT devices (simulated or physical).
-2. Run the application:
+2. Run the front end application:
    ```
-   node app.js
+   npm run build
+   npm run start
    ```
-
+3. Run the backend application:
+   ```
+   npm run start
+   npm run start:dev :::> To run in watch mode
+   ```
 ## License
 This project is made as POC and licensed under the [Wipro Limited](LICENSE).
