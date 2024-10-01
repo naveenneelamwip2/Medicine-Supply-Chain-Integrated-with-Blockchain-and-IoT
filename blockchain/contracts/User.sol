@@ -14,7 +14,7 @@ contract User is ERC721Upgradeable, OwnableUpgradeable {
 
     event UserDetailsUpdated(string emailId, string userHash);
 
-    function mintUser(string memory emailId, string memory userHash) public onlyOwner {
+    function addUser(string memory emailId, string memory userHash) public onlyOwner {
         userHashes[emailId] = userHash;
         emit UserDetailsUpdated(emailId, userHash);
     }

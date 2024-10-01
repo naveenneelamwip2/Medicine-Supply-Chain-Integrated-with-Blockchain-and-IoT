@@ -13,10 +13,12 @@ export class UserService {
   async register(userData) {
     const hashedPassword = await bcrypt.hash(userData.password, 10);
     userData.password = hashedPassword;
-    const encryptedUserJson = await this.ipfsService.encryptAndStore(userData);
-    const cid = await this.ipfsService.storeJson(encryptedUserJson);
-    await this.ethersService.addUser(userData.emailId, cid);
-    return { message: 'User registered successfully' };
+
+    const cid = await this.ipfsService.encryptAndStore(userData);
+
+    let tx = await this.ethersService.addUser(userData.emailId, cid);
+
+    return { message: 'User registered successfully', tx: tx };
   }
 
   async login(loginData) {

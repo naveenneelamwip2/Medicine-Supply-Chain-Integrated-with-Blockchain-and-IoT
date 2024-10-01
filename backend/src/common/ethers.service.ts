@@ -23,7 +23,7 @@ export class EthersService {
   
   async addUser(email: string, cid: string) {
     const tx = await this.userContractWithSigner.addUser(email, cid);
-    await tx.wait();
+    return await tx.wait();
   }
 
   async getUserHash(email: string): Promise<string> {
