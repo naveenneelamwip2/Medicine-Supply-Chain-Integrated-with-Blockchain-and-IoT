@@ -1,5 +1,6 @@
-import { Controller, Post, Body, Get, Param, Put } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Put, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('user')
 export class UserController {
@@ -20,7 +21,8 @@ export class UserController {
     return this.userService.getUserByEmail(email);
   }
 
-  @Put(':email')
+  @UseGuards(AuthGuard('jwt'))
+  @Put()
   async updateUserByEmail(@Param('email') email: string, @Body() updateData) {
     return this.userService.updateUserByEmail(email, updateData);
   }
