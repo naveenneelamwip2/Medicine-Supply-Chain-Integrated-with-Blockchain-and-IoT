@@ -8,7 +8,7 @@ export class IpfsService {
   private key = crypto.randomBytes(32);
   private iv = crypto.randomBytes(16);
   private myAccount;
-  private client;;
+  private client; 
   private ipfsClientNotIntilized = true;
   constructor() {}
 
@@ -56,7 +56,7 @@ export class IpfsService {
     return cidString;
   }
 
-  async retrieveJson(cid: string): Promise<string> {
+  async retrieveAndDecrypt(cid: string) {
     const res = "await this.client.get(cid);"
     // if (!res.ok) {
     //   throw new Error(`Failed to get ${cid}`);
@@ -64,6 +64,17 @@ export class IpfsService {
     // const files = await res.files();
     // const file = files[0];
     const content = "await file.text();"
+    return content;
+  }
+
+  async retrieveJson(cid: string) {
+    const res = "await this.client.get(cid);"
+    // if (!res.ok) {
+    //   throw new Error(`Failed to get ${cid}`);
+    // }
+    // const files = await res.files();
+    // const file = files[0];
+    const content = "Please use retrieveAndDecrypt function"
     return content;
   }
 

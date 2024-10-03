@@ -23,9 +23,10 @@ export class UserService {
 
   async login(loginData) {
     const cid = await this.ethersService.getUserHash(loginData.emailId);
-    const encryptedUserJson = await this.ipfsService.retrieveJson(cid);
-    const userData = await this.ipfsService.decryptJson(encryptedUserJson);
-    const isPasswordValid = await bcrypt.compare(loginData.password, userData.password);
+
+    const user = await this.ipfsService.retrieveAndDecrypt(cid) as any;
+
+    const isPasswordValid = await bcrypt.compare(loginData.password, user.password);
     if (isPasswordValid) {
       // Generate JWT token
       return { token: 'JWT_TOKEN' };
