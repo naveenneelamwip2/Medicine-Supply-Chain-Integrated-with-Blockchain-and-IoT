@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as crypto from 'crypto';
+const CID = require('cids');
 
 @Injectable()
 export class IpfsService {
@@ -46,8 +47,13 @@ export class IpfsService {
       type: "application/json",
     });
  
-    const cid = await this.client.uploadFile(blob);
-    return cid;
+    const cidObj = await this.client.uploadFile(blob);
+    
+    const cid = new CID(cidObj.version, cidObj.code, cidObj.multihash.bytes);
+    
+    const cidString = cid.toString();
+
+    return cidString;
   }
 
   async retrieveJson(cid: string): Promise<string> {

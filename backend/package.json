@@ -27,6 +27,7 @@
     "@nestjs/platform-express": "^10.0.0",
     "@web3-storage/w3up-client": "^16.0.0",
     "bcryptjs": "^2.4.3",
+    "cids": "^1.1.9",
     "ethers": "^6.13.2",
     "ipfs-http-client": "^60.0.1",
     "passport": "^0.7.0",

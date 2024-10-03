@@ -10,21 +10,21 @@ contract User is ERC721Upgradeable, OwnableUpgradeable {
         __Ownable_init(msg.sender);
     }
 
-    mapping(string => string) private userHashes;
+    mapping(string => string) private userCidMap;
 
-    event UserDetailsUpdated(string emailId, string userHash);
+    event UserDetailsUpdated(string emailId, string userCid);
 
-    function addUser(string memory emailId, string memory userHash) public onlyOwner {
-        userHashes[emailId] = userHash;
-        emit UserDetailsUpdated(emailId, userHash);
+    function addUser(string memory emailId, string memory userCid) public onlyOwner {
+        userCidMap[emailId] = userCid;
+        emit UserDetailsUpdated(emailId, userCid);
     }
 
-    function getUserHash(string memory emailId) public view returns (string memory) {
-        return userHashes[emailId];
+    function getUserCid(string memory emailId) public view returns (string memory) {
+        return userCidMap[emailId];
     }
 
-    function updateUserDetails(string memory emailId, string memory userHash) public onlyOwner {
-        userHashes[emailId] = userHash;
-        emit UserDetailsUpdated(emailId, userHash);
+    function updateUserDetails(string memory emailId, string memory userCid) public onlyOwner {
+        userCidMap[emailId] = userCid;
+        emit UserDetailsUpdated(emailId, userCid);
     }
 }

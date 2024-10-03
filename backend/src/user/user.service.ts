@@ -18,7 +18,7 @@ export class UserService {
 
     let tx = await this.ethersService.addUser(userData.emailId, cid);
 
-    return { message: 'User registered successfully', tx: tx };
+    return { message: 'User registered successfully', tx: tx, cid: cid };
   }
 
   async login(loginData) {
