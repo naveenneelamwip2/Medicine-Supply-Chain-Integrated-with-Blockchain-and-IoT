@@ -16,10 +16,6 @@ export class UserController {
     return this.userService.login(loginData);
   }
 
-  @Get(':email')
-  async getUserByEmail(@Param('email') email: string) {
-    return this.userService.getUserByEmail(email);
-  }
 
   @UseGuards(AuthGuard('jwt'))
   @Put()
