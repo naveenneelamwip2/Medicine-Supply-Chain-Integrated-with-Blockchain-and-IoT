@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { EthersService } from '../common/ethers.service';
 import { IpfsService } from '../common/ipfs.service';
+import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()
@@ -8,6 +9,7 @@ export class UserService {
   constructor(
     private readonly ethersService: EthersService,
     private readonly ipfsService: IpfsService,
+    private readonly jwtService: JwtService,
   ) {}
 
   async register(userData) {
@@ -28,8 +30,9 @@ export class UserService {
 
     const isPasswordValid = await bcrypt.compare(loginData.password, user.password);
     if (isPasswordValid) {
-      // Generate JWT token
-      return { token: 'JWT_TOKEN' };
+      const payload = { email: user.emailId, sub: user.userId };
+      const token = this.jwtService.sign(payload);
+      return { token };
     }
     throw new Error('Invalid credentials');
   }
