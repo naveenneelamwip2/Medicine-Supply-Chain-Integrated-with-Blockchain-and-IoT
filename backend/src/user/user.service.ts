@@ -32,9 +32,9 @@ export class UserService {
     if (isPasswordValid) {
       const payload = { email: user.emailId, sub: user.name };
       const token = this.jwtService.sign(payload, { secret: "secretKey" });
-      return { token };
+      return { status: 201, message: "User Authenticated Successfully", data:{ access_token: token }};
     }
-    throw new Error('Invalid credentials');
+    return { status: 401, message: "Incorrect user id or password", data: loginData}
   }
 
   async getUserByEmail(email: string) {
