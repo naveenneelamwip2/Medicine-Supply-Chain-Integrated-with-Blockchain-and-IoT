@@ -9,8 +9,9 @@ export class IpfsService {
   private iv = crypto.randomBytes(16);
   private myAccount;
   private client; 
-  private ipfsClientNotIntilized = true;
-  constructor() {}
+  constructor() {
+    this.initializeClient()
+  }
 
   async initializeClient() {
     try {
@@ -20,8 +21,7 @@ export class IpfsService {
       await this.client.setCurrentSpace(`did:key:${process.env.ipfs_space}`)
 
       console.log('Client initialized and logged in:', this.myAccount);
-
-      this.ipfsClientNotIntilized = false;
+      
       return true
     } catch (error) {
       console.error('Error initializing client:', error);
@@ -41,7 +41,7 @@ export class IpfsService {
 
 
   async storeJson(userData: string): Promise<string> {
-    if(this.ipfsClientNotIntilized) await this.initializeClient();
+    // if(this.ipfsClientNotIntilized) await this.initializeClient(); not required as init in contructor
 
     const blob = new Blob([userData], {
       type: "application/json",
@@ -57,7 +57,7 @@ export class IpfsService {
   }
 
   async retrieveAndDecrypt(cid: string) {
-    const res = "await this.client.get(cid);"
+    // const res = await this.client.get(cid);
     // if (!res.ok) {
     //   throw new Error(`Failed to get ${cid}`);
     // }
@@ -73,6 +73,8 @@ export class IpfsService {
     //   throw new Error(`Failed to get ${cid}`);
     // }
     // const files = await res.files();
+
+    throw Error("Please use retrieveAndDecrypt function");
     // const file = files[0];
     const content = "Please use retrieveAndDecrypt function"
     return content;
