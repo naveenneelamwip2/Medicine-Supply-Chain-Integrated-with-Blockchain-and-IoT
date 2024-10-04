@@ -5,8 +5,8 @@ const CID = require('cids');
 @Injectable()
 export class IpfsService {
   private algorithm = 'aes-256-cbc';
-  private key = crypto.randomBytes(32);
-  private iv = crypto.randomBytes(16);
+  private key = Buffer.from(process.env.encryption_key, 'hex');
+  private iv = Buffer.from(process.env.encryption_iv, 'hex');
   private myAccount;
   private client; 
   constructor() {
@@ -18,7 +18,7 @@ export class IpfsService {
       const { create } = await import('@web3-storage/w3up-client');
       this.client = await create();
       this.myAccount = await this.client.login(`naveenneelamwip@gmail.com`);
-      await this.client.setCurrentSpace(`did:key:${process.env.ipfs_space}`)
+      await this.client.setCurrentSpace(`did:key:${process.env.ipfs_space}`);
 
       console.log('Client initialized and logged in:', this.myAccount);
       
@@ -31,12 +31,8 @@ export class IpfsService {
 
 
   async encryptAndStore(data: any): Promise<string> {
-    const cipher = crypto.createCipheriv(this.algorithm, this.key, this.iv);
-    let encrypted = cipher.update(JSON.stringify(data), 'utf8', 'hex');
-    encrypted += cipher.final('hex');
-
-    return await this.storeJson(encrypted)
-
+    const encrypted = await this.encryptJson(data);
+    return await this.storeJson(encrypted);
   }
 
 
@@ -57,14 +53,10 @@ export class IpfsService {
   }
 
   async retrieveAndDecrypt(cid: string) {
-    // const res = await this.client.get(cid);
-    // if (!res.ok) {
-    //   throw new Error(`Failed to get ${cid}`);
-    // }
-    // const files = await res.files();
-    // const file = files[0];
-    const content = "await file.text();"
-    return content;
+    const res = await fetch(`https://${cid}.ipfs.w3s.link`)
+    const content = await res.text();
+    
+    return await this.decryptJson(content)
   }
 
   async retrieveJson(cid: string) {
@@ -78,6 +70,14 @@ export class IpfsService {
     // const file = files[0];
     const content = "Please use retrieveAndDecrypt function"
     return content;
+  }
+
+  async encryptJson(data) {
+    const cipher = crypto.createCipheriv(this.algorithm, this.key, this.iv);
+    let encrypted = cipher.update(JSON.stringify(data), 'utf8', 'hex');
+    encrypted += cipher.final('hex');
+
+    return encrypted;
   }
 
   async decryptJson(data: string): Promise<any> {
