@@ -26,32 +26,32 @@ export class EthersService {
     return await tx.wait();
   }
 
-  async getUserHash(email: string): Promise<string> {
-    return await this.userContractWithSigner.getUserHash(email);
+  async getUserCid(email: string): Promise<string> {
+    return await this.userContractWithSigner.getUserCid(email);
   }
 
   async updateUser(email: string, cid: string) {
-    const tx = await this.userContractWithSigner.updateUser(email, cid);
+    const tx = await this.userContractWithSigner.updateUserDetails(email, cid);
     await tx.wait();
   }
 
-  async addMedicine(userId: string, cid: string) {
-    const tx = await this.medicineContractWithSigner.addMedicine(userId, cid);
+  async addMedicine(userCid: string, medicineId:string, medicineCid: string) {
+    const tx = await this.medicineContractWithSigner.addMedicine(userCid, medicineId, medicineCid);
     await tx.wait();
   }
 
-  async getMedicineHashes(userCid: string): Promise<string[]> {
-    return await this.medicineContractWithSigner.getMedicineHashes(userCid);
+  async getMedicineHistory(userCid: string, medicineId:string): Promise<string[]> {
+    return await this.medicineContractWithSigner.getMedicineHistory(userCid, medicineId);
   }
 
-  async getMedicineHash(medicineId:string, userCid: string): Promise<string[]> {
-    let allUsrMedicines = await this.medicineContractWithSigner.getMedicineHash(userCid);
-
-    return allUsrMedicines.filter(medicine=>medicineId === medicine.medicineId)
-  }
-
-  async updateMedicine(medicineId: string, cid: string) {
-    const tx = await this.medicineContractWithSigner.updateMedicine(medicineId, cid);
+  async updateMedicine(userCid: string, medicineId:string, medicineCid: string) {
+    const tx = await this.medicineContractWithSigner.updateMedicine(userCid, medicineId, medicineCid);
     await tx.wait();
+  }
+
+  async getAllUserMedicineEvents(userCid: string): Promise<any> {
+    const filter = this.medicineContractWithSigner.filters.MedicineEvt(userCid);
+    const events = await this.medicineContractWithSigner.queryFilter(filter, 0, 'latest');
+    return events
   }
 }

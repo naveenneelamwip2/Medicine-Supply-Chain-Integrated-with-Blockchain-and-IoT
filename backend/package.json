@@ -30,6 +30,7 @@
     "cids": "^1.1.9",
     "ethers": "^6.13.2",
     "ipfs-http-client": "^60.0.1",
+    "js-kubo-rpc-client": "^1.0.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.2.0",

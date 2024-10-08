@@ -5,14 +5,14 @@ import { MedicineService } from './medicine.service';
 export class MedicineController {
   constructor(private readonly medicineService: MedicineService) {}
 
-  @Post('add')
+  @Post()
   async addMedicine(@Body() medicineData) {
-    return this.medicineService.addMedicine(medicineData);
+    return this.medicineService.addMedicine(medicineData.email, medicineData);
   }
 
-  @Put(':medicineId')
-  async updateMedicineById(@Param('medicineId') medicineId: string, @Body() updateData) {
-    return this.medicineService.updateMedicineById(medicineId, updateData);
+  @Put(':userEmail')
+  async updateMedicineById(@Param('userEmail') userEmail: string, @Body() updateData) {
+    return this.medicineService.updateMedicineById(userEmail, updateData);
   }
 
   @Get(':email')

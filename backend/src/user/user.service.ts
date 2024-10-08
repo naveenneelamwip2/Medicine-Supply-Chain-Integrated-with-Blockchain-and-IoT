@@ -24,7 +24,7 @@ export class UserService {
   }
 
   async login(loginData) {
-    const cid = await this.ethersService.getUserHash(loginData.emailId);
+    const cid = await this.ethersService.getUserCid(loginData.emailId);
 
     const user = await this.ipfsService.retrieveAndDecrypt(cid) as any;
 
@@ -38,16 +38,15 @@ export class UserService {
   }
 
   async getUserByEmail(email: string) {
-    const cid = await this.ethersService.getUserHash(email);
-    const encryptedUserJson = await this.ipfsService.retrieveJson(cid);
-    return this.ipfsService.decryptJson(encryptedUserJson);
+    const cid = await this.ethersService.getUserCid(email);
+    const userDoc = await this.ipfsService.retrieveAndDecrypt(cid);
+    return userDoc
   }
 
   async updateUserByEmail(email: string, updateData) {
     const user = await this.getUserByEmail(email);
     Object.assign(user, updateData);
-    const encryptedUserJson = await this.ipfsService.encryptAndStore(user);
-    const cid = await this.ipfsService.storeJson(encryptedUserJson);
+    const cid = await this.ipfsService.encryptAndStore(user);
     await this.ethersService.updateUser(email, cid);
     return { message: 'User updated successfully' };
   }
