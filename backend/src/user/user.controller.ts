@@ -19,7 +19,7 @@ export class UserController {
 
   @UseGuards(AuthGuard('jwt'))
   @Put()
-  async updateUserByEmail(@Param('email') email: string, @Body() updateData) {
-    return this.userService.updateUserByEmail(email, updateData);
+  async updateUserByEmail(@Body() updateData) {
+    return this.userService.updateUserByEmail(updateData);
   }
 }
