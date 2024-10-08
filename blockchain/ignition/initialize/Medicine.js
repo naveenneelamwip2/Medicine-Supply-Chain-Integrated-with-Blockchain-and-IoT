@@ -1,28 +1,23 @@
 const { ethers, upgrades } = require("hardhat");
 
 async function init() {
-    if (process.env.target) {
-        const [owner, addr1, addr2] = await ethers.getSigners();
+    const [owner, addr1, addr2] = await ethers.getSigners();
 
-        const hardhatToken = await ethers.deployContract("MedicineTracking");
+    const hardhatToken = await ethers.deployContract("Medicine");
 
-        await hardhatToken.waitForDeployment();
+    await hardhatToken.waitForDeployment();
 
-        console.log("hardhatToken: ", hardhatToken);
+    console.log("hardhatToken: ", hardhatToken);
 
-        let tx = await hardhatToken.initialize()
+    let tx = await hardhatToken.initialize()
 
-        // await tx.waitForDeployment();
+    await tx.wait();
 
-        await tx.wait();
+    console.log("tx: ", tx);
 
-        console.log("tx: ", tx);
+    let conOwner = await hardhatToken.owner();
 
-        let conOwner = await hardhatToken.owner();
-
-        console.log("hardhatToken.owner,owner: ",conOwner,owner.address)
-
-    }
+    console.log("hardhatToken.owner,owner: ", conOwner, owner.address)
 }
 
 init()

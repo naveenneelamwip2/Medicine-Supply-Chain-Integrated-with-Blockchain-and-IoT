@@ -10,9 +10,8 @@ export class MedicineService {
   ) {}
 
   async addMedicine(medicineData) {
-    const encryptedMedicineJson = await this.ipfsService.encryptAndStore(medicineData);
-    const cid = await this.ipfsService.storeJson(encryptedMedicineJson);
-    await this.ethersService.addMedicine(medicineData.userId, cid);
+    const cid = await this.ipfsService.encryptAndStore(medicineData);
+    await this.ethersService.addMedicine(medicineData, cid);
     return { message: 'Medicine added successfully' };
   }
 
