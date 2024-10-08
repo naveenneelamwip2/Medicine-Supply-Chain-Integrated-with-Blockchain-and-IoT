@@ -43,11 +43,12 @@ export class UserService {
     return userDoc
   }
 
-  async updateUserByEmail(email: string, updateData) {
-    const user = await this.getUserByEmail(email);
+  async updateUserByEmail(updateData) {
+    const user = await this.getUserByEmail(updateData.emailId);
+    if(!user) return { status: 401, message: 'User not found in blockchain', data: updateData.email };
     Object.assign(user, updateData);
     const cid = await this.ipfsService.encryptAndStore(user);
-    await this.ethersService.updateUser(email, cid);
-    return { message: 'User updated successfully' };
+    const tx = await this.ethersService.updateUser(updateData.email, cid);
+    return { status:201, message: 'User updated successfully', data: {tx, cid: cid} };
   }
 }
