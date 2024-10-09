@@ -8,19 +8,20 @@ export class EthersService {
   private provider_url = process.env.provider_url
   private provider_key = process.env.provider_key
 
-  private contractAddress = process.env.user_contract;
+  private userContractAddress = process.env.user_contract;
+  private medicineContractAddress = process.env.medicine_contract;
 
   private provider = new ethers.JsonRpcProvider(this.provider_url)
   private signer = new ethers.Wallet(this.provider_key, this.provider)
 
   private userAddress = this.signer.address;
 
-  private userContract = new ethers.Contract(this.contractAddress, userContractAbi, this.provider)
+  private userContract = new ethers.Contract(this.userContractAddress, userContractAbi, this.provider)
   private userContractWithSigner = this.userContract.connect(this.signer) as any;
- 
-  private medicineContract = new ethers.Contract(this.contractAddress, medicineContractAbi, this.provider)
+
+  private medicineContract = new ethers.Contract(this.medicineContractAddress, medicineContractAbi, this.provider)
   private medicineContractWithSigner = this.medicineContract.connect(this.signer) as any;
-  
+
   async addUser(email: string, cid: string) {
     const tx = await this.userContractWithSigner.addUser(email, cid);
     return await tx.wait();
@@ -32,26 +33,26 @@ export class EthersService {
 
   async updateUser(email: string, cid: string) {
     const tx = await this.userContractWithSigner.updateUserDetails(email, cid);
-    await tx.wait();
+    return await tx.wait();
   }
 
   async addMedicine(userCid: string, medicineId:string, medicineCid: string) {
     const tx = await this.medicineContractWithSigner.addMedicine(userCid, medicineId, medicineCid);
-    await tx.wait();
+    return await tx.wait();
   }
 
-  async getMedicineHistory(userCid: string, medicineId:string): Promise<string[]> {
+  async getMedicineHistory(userCid: string, medicineId: string): Promise<string[]> {
     return await this.medicineContractWithSigner.getMedicineHistory(userCid, medicineId);
   }
 
-  async updateMedicine(userCid: string, medicineId:string, medicineCid: string) {
+  async updateMedicine(userCid: string, medicineId: string, medicineCid: string) {
     const tx = await this.medicineContractWithSigner.updateMedicine(userCid, medicineId, medicineCid);
-    await tx.wait();
+    return await tx.wait();
   }
 
   async getAllUserMedicineEvents(userCid: string): Promise<any> {
     const filter = this.medicineContractWithSigner.filters.MedicineEvt(userCid);
     const events = await this.medicineContractWithSigner.queryFilter(filter, 0, 'latest');
-    return events
+    return events;
   }
 }

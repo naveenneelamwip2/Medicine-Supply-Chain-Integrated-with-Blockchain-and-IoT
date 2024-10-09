@@ -12,7 +12,7 @@ contract Medicine is ERC721Upgradeable, OwnableUpgradeable {
 
     mapping(string => mapping(string => string[])) private medicineHistory;
 
-    event MedicineEvt(string indexed userCid, string indexed medicineId, string medicineCid);
+    event MedicineEvt(string indexed userCid, string medicineId, string medicineCid);
 
     function addMedicine(string memory userCid, string memory medicineId, string memory medicineCid) public {
         medicineHistory[userCid][medicineId].push(medicineCid);
