@@ -7,21 +7,37 @@ export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
-  async validateUser(email: string, pass: string): Promise<any> {
-    const user = await this.userService.getUserByEmail(email);
-    if (user && user.password === pass) {
-      const { password, ...result } = user;
-      return result;
-    }
-    return null;
+  async login(loginData) {
+    const user = await this.userService.login(loginData);
+    if(!user) return { status: 401, message: "Incorrect user id or password", data: loginData }
+
+    const payload = { emailId: user.emailId, sub: user.name };
+    const accessToken = this.jwtService.sign(payload);
+    const refreshToken = this.jwtService.sign(payload, {
+      secret: "refreshSecretKey",
+      expiresIn: '30m'
+    });
+    return { status: 201, message: "User Authenticated Successfully", data: { accessToken, refreshToken } };
   }
 
-  async login(user: any) {
-    const payload = { email: user.email, sub: user.userId };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+  async verifyRefreshToken(loginData: any) {
+    const { refreshToken } = loginData;
+
+    if (!refreshToken) return { status: 401, message: "Unauthorized" };
+
+    let accessToken;
+    // Verify refresh token using jwtService
+    try {
+      const user = this.jwtService.verify(refreshToken, { secret: 'refreshSecretKey' });
+      const payload = { emailId: user.emailId };
+      accessToken = this.jwtService.sign(payload);
+
+    } catch (err) {
+      return { stutus: 403, message: err.message };
+    }
+
+    return {status: 200, message: "new token generated", accessToken}
   }
 }

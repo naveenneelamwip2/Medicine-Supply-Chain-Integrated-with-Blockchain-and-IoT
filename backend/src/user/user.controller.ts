@@ -11,11 +11,6 @@ export class UserController {
     return this.userService.register(userData);
   }
 
-  @Post('login')
-  async login(@Body() loginData) {
-    return this.userService.login(loginData);
-  }
-
 
   @UseGuards(AuthGuard('jwt'))
   @Put()

@@ -8,9 +8,8 @@ import { JwtService } from '@nestjs/jwt';
 export class UserService {
   constructor(
     private readonly ethersService: EthersService,
-    private readonly ipfsService: IpfsService,
-    private readonly jwtService: JwtService,
-  ) {}
+    private readonly ipfsService: IpfsService
+  ) { }
 
   async register(userData) {
     const hashedPassword = await bcrypt.hash(userData.password, 10);
@@ -23,18 +22,16 @@ export class UserService {
     return { message: 'User registered successfully', tx: tx, cid: cid };
   }
 
-  async login(loginData) {
+  async login(loginData): Promise<any> {
     const cid = await this.ethersService.getUserCid(loginData.emailId);
 
     const user = await this.ipfsService.retrieveAndDecrypt(cid) as any;
 
     const isPasswordValid = await bcrypt.compare(loginData.password, user.password);
-    if (isPasswordValid) {
-      const payload = { email: user.emailId, sub: user.name };
-      const token = this.jwtService.sign(payload, { secret: "secretKey" });
-      return { status: 201, message: "User Authenticated Successfully", data:{ access_token: token }};
-    }
-    return { status: 401, message: "Incorrect user id or password", data: loginData}
+
+    if(!isPasswordValid) return null
+
+    return user
   }
 
   async getUserByEmail(email: string) {
@@ -45,10 +42,10 @@ export class UserService {
 
   async updateUserByEmail(updateData) {
     const user = await this.getUserByEmail(updateData.emailId);
-    if(!user) return { status: 401, message: 'User not found in blockchain', data: updateData.email };
+    if (!user) return { status: 401, message: 'User not found in blockchain', data: updateData.email };
     Object.assign(user, updateData);
     const cid = await this.ipfsService.encryptAndStore(user);
     const tx = await this.ethersService.updateUser(updateData.email, cid);
-    return { status:201, message: 'User updated successfully', data: {tx, cid: cid} };
+    return { status: 201, message: 'User updated successfully', data: { tx, cid: cid } };
   }
 }
