@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { EthersService } from '../common/ethers.service';
 import { IpfsService } from '../common/ipfs.service';
 import * as crypto from 'crypto';
@@ -11,7 +11,7 @@ export class MedicineService {
 
   constructor(
     private readonly ethersService: EthersService,
-    private readonly ipfsService: IpfsService,
+    @Inject(IpfsService) private readonly ipfsService: IpfsService,
   ) {}
 
   async addMedicine(email: string, medicineData) {

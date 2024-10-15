@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
 import { UserController } from './user.controller';
-import { UserService } from './user.service';
-import { EthersService } from '../common/ethers.service';
-import { IpfsService } from '../common/ipfs.service';
+import { UserService } from './user.service';;
 import { JwtService } from '@nestjs/jwt';
+import { BlockchainModule } from 'src/common/blockchain.module';
 
 @Module({
+  imports: [BlockchainModule],
   controllers: [UserController],
-  providers: [JwtService, UserService, EthersService, IpfsService],
+  providers: [JwtService, UserService],
+  exports: [UserService]
 })
 export class UserModule {}

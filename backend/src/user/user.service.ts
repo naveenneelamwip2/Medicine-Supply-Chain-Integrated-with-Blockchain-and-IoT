@@ -1,14 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { EthersService } from '../common/ethers.service';
 import { IpfsService } from '../common/ipfs.service';
 import * as bcrypt from 'bcryptjs';
-import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly ethersService: EthersService,
-    private readonly ipfsService: IpfsService
+    @Inject(IpfsService) private readonly ipfsService: IpfsService
   ) { }
 
   async register(userData) {

@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userService: UserService,
+    @Inject(UserService) private readonly userService: UserService,
     private readonly jwtService: JwtService,
   ) { }
 
@@ -28,7 +28,6 @@ export class AuthService {
     if (!refreshToken) return { status: 401, message: "Unauthorized" };
 
     let accessToken;
-    // Verify refresh token using jwtService
     try {
       const user = this.jwtService.verify(refreshToken, { secret: 'refreshSecretKey' });
       const payload = { emailId: user.emailId };

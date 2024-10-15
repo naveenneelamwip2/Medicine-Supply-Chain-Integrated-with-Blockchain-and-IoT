@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { MedicineController } from './medicine.controller';
 import { MedicineService } from './medicine.service';
-import { EthersService } from '../common/ethers.service';
-import { IpfsService } from '../common/ipfs.service';
+import { BlockchainModule } from 'src/common/blockchain.module';
 
 @Module({
+  imports: [BlockchainModule],
   controllers: [MedicineController],
-  providers: [MedicineService, EthersService, IpfsService],
+  providers: [MedicineService],
 })
 export class MedicineModule {}
