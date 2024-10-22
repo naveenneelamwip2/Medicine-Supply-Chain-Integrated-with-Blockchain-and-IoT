@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { EthersService } from '../common/ethers.service';
+import { EthersService } from '../common/ethers/ethers.service';
 import { IpfsService } from '../common/ipfs.service';
 import * as crypto from 'crypto';
 import { ethers } from 'ethers';
-import { medicineContractAbi } from 'src/common/contract_abi';
+import { medicineContractAbi } from 'src/common/ethers/contract_abi';
 
 @Injectable()
 export class MedicineService {

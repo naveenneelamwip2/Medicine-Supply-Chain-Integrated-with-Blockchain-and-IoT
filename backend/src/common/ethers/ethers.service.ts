@@ -50,7 +50,7 @@ export class EthersService {
     return await tx.wait();
   }
 
-  async getAllUserMedicineEvents(userCid: string): Promise<any> {
+  async getAllUserMedicineEvents(userCid: string): Promise<[]> {
     const filter = this.medicineContractWithSigner.filters.MedicineEvt(userCid);
     const events = await this.medicineContractWithSigner.queryFilter(filter, 0, 'latest');
     return events;

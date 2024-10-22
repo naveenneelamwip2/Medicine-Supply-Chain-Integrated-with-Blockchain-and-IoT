@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MedicineService } from './medicine.service';
-import { EthersService } from '../common/ethers.service';
+import { EthersService } from '../common/ethers/ethers.service';
 import { IpfsService } from '../common/ipfs.service';
 
 describe('MedicineService', () => {

@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { EthersService } from '../common/ethers.service';
+import { EthersService } from '../common/ethers/ethers.service';
 import { IpfsService } from '../common/ipfs.service';
 import * as bcrypt from 'bcryptjs';
 
